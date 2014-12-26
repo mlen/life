@@ -6,6 +6,7 @@ import System.Console.Terminfo
 import Life.Board
 import Life.BoardGenerator
 import Life.Game
+import Life.TermOutput
 
 main :: IO ()
 main = do
@@ -16,6 +17,5 @@ main = do
 
     b <- boardM cols lines randomBoard
     forM_ (game b) $ \b -> do
-      render b
-      hFlush stdout
+      runTermOutput term (renderBoard b)
       threadDelay 80000

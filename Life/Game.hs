@@ -2,7 +2,6 @@ module Life.Game where
 
 import           Control.Comonad     (extract, extend)
 import           Data.Maybe          (maybeToList)
-import qualified Data.Vector         as V
 
 import           Life.Board
 
@@ -30,20 +29,3 @@ tick = extend nextState
 
 game :: FocusedBoard Cell -> [FocusedBoard Cell]
 game = iterate tick
-
-drawCell :: Cell -> Char
-drawCell Alive = 'O'
-drawCell Dead  = '.'
-
-drawLine :: Board Cell -> String
-drawLine b = map drawCell $ V.toList (rep b)
-
-drawBoard :: FocusedBoard Cell -> String
-drawBoard (FocusedBoard _ _ b) = unlines (go (drawLine b) [])
-  where
-    go [] acc = acc
-    go s  acc = let (i, t) = splitAt (width b) s
-                in go t (i:acc)
-
-render :: FocusedBoard Cell -> IO ()
-render = putStr . drawBoard
